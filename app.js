@@ -1,6 +1,20 @@
 const express = require('express');
 const app = express();
 const port = process.env.port || 3000;
+const dns = require('dns');
+
+// const MongoClient = require('mongodb').MongoClient;
+// // Connection URL
+// const url = '';
+// // Database Name
+// const dbName = 'myproject';
+// // Use connect method to connect to the server
+// MongoClient.connect(url, function(err, client) {
+//   console.log(err);  
+//   console.log("Connected successfully to server");
+//   const db = client.db(dbName);
+//   client.close();
+// });
 
 let str = 'abcdefghijklmnopqrstuvwxyz';
 str = str + str.toUpperCase();
@@ -22,24 +36,27 @@ const findPerm = (k) => {
 
 app.get(/\/.*/, function (req, res, next) {
     
-    console.log(req.get('host'));
     let response = {};
     const path = req.path.slice(1);
-    console.log(req.path.slice(1).match(/^http[s?]:\/\/[^\/].+\.+/))
-    if (req.path.slice(1).match(/^http[s?]:\/\/[^\/].+\.+/)) {
-        response.original_url = req.path.slice(1);
-        const shorturl = findPerm(10).map(function(ix) {
-            return str[ix];
-        }).join('');
-        response.shortened_url = req.protocol + '://' + req.get('host') + '/' + shorturl;
-        
-        // res.status(302)
-        // res.location('http://www.google.com')
-        // res.end()
-        res.send(response)
-    } else {
-        res.send('not a valid url')
-    }
+    const re = /^(https?:\/\/)?([^\/]+\.[^\.\/]+)(\/.+)?/;
+    const host = (req.path.slice(1).match(re))[2] || null;
+    dns.lookup(host, (err, address, family) => {
+        console.log(address);
+        if (address) {
+            response.original_url = req.path.slice(1);
+            const shorturl = findPerm(226920).map(function(ix) {
+                return str[ix - 1];
+            }).join('');
+            response.shortened_url = req.protocol + '://' + req.get('host') + '/' + shorturl;
+            
+            // res.status(302)
+            // res.location('http://www.google.com')
+            // res.end()
+            res.send(response)
+        } else {
+            res.send('not a valid url')
+        }
+    })
 });
 
 app.listen(port);
