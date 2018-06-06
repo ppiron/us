@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const dburl = 'mongodb://pao:piropiro@ds012198.mlab.com:12198/mydb';
+const dburl = 'mongodb://@ds012198.mlab.com:12198/mydb';
 const dbName = 'mydb';
 
 let _db
