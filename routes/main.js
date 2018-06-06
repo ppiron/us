@@ -28,7 +28,7 @@ function handleURL(req, res) {
                   console.log(error);
                   return
               }
-              console.log(result);
+              console.log(result.ops[0]);
           })
           // res.status(302)
           // res.location('http://www.google.com')
