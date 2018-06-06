@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const dns = require('dns');
 const findPerm = require('../findPerm.js');
+const database = require('../datatabase.js');
+const db = database.getDb();
 
 function handleURL(req, res) {
   let str = 'abcdefghijklmnopqrstuvwxyz';
@@ -21,7 +23,13 @@ function handleURL(req, res) {
               return str[ix - 1];
           }).join('');
           response.shortened_url = req.protocol + '://' + req.get('host') + '/' + shorturl;
-          
+          db.collection('urls').insertOne( {a: 1}, (error, result) => {
+              if (error) {
+                  console.log(error);
+                  return
+              }
+              console.log(result);
+          })
           // res.status(302)
           // res.location('http://www.google.com')
           // res.end()
