@@ -18,22 +18,34 @@ function handleURL(req, res) {
   dns.lookup(host, (err, address, family) => {
       console.log(address);
       if (address) {
-          response.original_url = req.path.slice(1);
-          const shorturl = findPerm(226920).map(function(ix) {
-              return str[ix - 1];
-          }).join('');
-          response.shortened_url = req.protocol + '://' + req.get('host') + '/' + shorturl;
-          db.collection('urls').insertOne( {a: 1}, (error, result) => {
+          db.collection('urls').find( {url: url}, (error, result) => {
               if (error) {
                   console.log(error);
-                  return
+                  // res.status(302)
+                  // res.location('http://www.google.com')
+                  // res.end()
+                } else {
+                    result.count()
+                    .then( (count) => {
+                        console.log(count);
+                        if (count === 0) {
+                            const shorturl = findPerm(226920).map(function(ix) {
+                                return str[ix - 1];
+                            }).join('');
+                            db.collection('urls').insertOne( {id: 226920, url: url, shorturl: shorturl}, (error, result) => {
+                                if (error) {
+                                    console.log(error);
+                                    return
+                                }
+                                console.log(result.ops[0]);
+                            })
+                            response.original_url = url;
+                            response.shortened_url = req.protocol + '://' + req.get('host') + '/' + shorturl;
+                            res.send(response)                            
+                        }
+                    });
               }
-              console.log(result.ops[0]);
           })
-          // res.status(302)
-          // res.location('http://www.google.com')
-          // res.end()
-          res.send(response)
       } else {
           res.send('not a valid url')
       }
