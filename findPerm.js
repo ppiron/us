@@ -1,6 +1,7 @@
 const findPerm = (k) => { 
   const n = 62;
   const r = 3;
+  k = k % 238328;
   const perm = [];
   const first = Math.ceil(k / Math.pow(n, r - 1));
   perm.push(first);
