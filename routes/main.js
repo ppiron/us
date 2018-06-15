@@ -57,16 +57,16 @@ function handleURL(req, res) {
                 result.toArray()
                   .then((data) => {
                     console.log(data[0]['url'])
-                    res.status(302)
-                    res.location(data[0]['url'])
-                    res.end()
+                    response.original_url = data[0]['url'];
+                    response.shortened_url = req.protocol + '://' + req.get('host') + '/' + data[0]['shorturl'];
+                    res.send(response)
                   });
               }
             });
         }
       })
     } else {
-      res.send('not a valid url')
+      res.json({error: 'Not a valid url'})
     }
   })
 }
