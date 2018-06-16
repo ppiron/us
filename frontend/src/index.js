@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-function makeRequest(path) {
-  const request = new Request('http://localhost:3000/' + path, {
-	    method: 'GET', 
+function makeRequest(posted_url) {
+  const request = new Request('http://localhost:3000/api/new', {
+	    method: 'POST', 
       headers: {
-        "Content-type": "application/x-www-form-urlencoded"
+        "Content-type": "application/json"
       },
+      body: JSON.stringify({
+        posted_url: posted_url,
+      }),
     })
   return fetch(request)
     .then( (response) => {

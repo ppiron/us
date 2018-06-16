@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const dns = require('dns');
+const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json()
 const findPerm = require('../findPerm.js');
 const database = require('../datatabase.js');
 const db = database.getDb();
@@ -11,7 +13,8 @@ function handleURL(req, res) {
 
   let response = {};
 
-  const url = req.path.slice(1);
+  const url = req.body.posted_url;
+  console.log(url);
   const re = /^(https?:\/\/)?([^\/]+\.[^\.\/]+)(\/.+)?/;
   const host = url.match(re) ? (url.match(re))[2] : null;
 
@@ -71,6 +74,6 @@ function handleURL(req, res) {
   })
 }
 
-router.get(/\/.*/, handleURL);
+router.post('/api/new', jsonParser, handleURL);
 
 module.exports = router;
