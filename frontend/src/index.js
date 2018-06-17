@@ -52,12 +52,9 @@ class App extends Component {
     };
 
     this.onChange = this.onChange.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.navigate = this.navigate.bind(this);
-  }
-
-  componentDidMount() {
-    
   }
 
   onChange(event) {
@@ -66,6 +63,13 @@ class App extends Component {
           text: event.target.value,
         }
       )
+  }
+
+  onKeyPress(event) {
+    console.log(event.key)
+    if (event.key === 'Enter') {
+      this.onSubmit();
+    }
   }
 
   onSubmit(event) {
@@ -94,8 +98,9 @@ class App extends Component {
       return (
         <div>
           <div id='container'>
-          <p>Insert url to shorten </p>
-          <input type="text" placeholder='https://www.example.com' value={this.state.text} onChange={this.onChange}/>
+          <p>Insert URL to be shorten</p>
+          <input type="text" placeholder='https://www.example.com' value={this.state.text}
+          onChange={this.onChange} onKeyPress={this.onKeyPress}/>
           <div className='button' onClick={this.onSubmit}>Submit</div>
           <div id='error'>{this.state.data.error}</div>
           </div>
@@ -114,8 +119,9 @@ class App extends Component {
     return (
       <div>
         <div id='container'>
-          <p>Insert url to shorten </p>
-          <input type="text" placeholder='https://www.example.com' value={this.state.text} onChange={this.onChange}/>
+          <p>Insert URL to be shorten</p>
+          <input type="text" placeholder='https://www.example.com' value={this.state.text} 
+          onChange={this.onChange} onKeyPress={this.onKeyPress}/>
           <div className='button' onClick={this.onSubmit}>Submit</div>
           <div id='url'>{!this.state.isLoading && `Original url: ${this.state.data.original_url}`}</div>
           <div id='shorturl'>

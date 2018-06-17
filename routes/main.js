@@ -51,7 +51,8 @@ function handleURL(req, res) {
                       console.log(result.ops[0]);
                     })
                     response.original_url = url;
-                    response.shortened_url = req.protocol + '://' + req.get('host') + '/' + shorturl;
+                    // response.shortened_url = req.protocol + '://' + req.get('host') + '/' + shorturl;
+                    response.shortened_url = shorturl;
                     res.send(response)
                   })
                 })
@@ -61,7 +62,8 @@ function handleURL(req, res) {
                   .then((data) => {
                     console.log(data[0]['url'])
                     response.original_url = data[0]['url'];
-                    response.shortened_url = req.protocol + '://' + req.get('host') + '/' + data[0]['shorturl'];
+                    // response.shortened_url = req.protocol + '://' + req.get('host') + '/' + data[0]['shorturl'];
+                    response.shortened_url = data[0]['shorturl'];
                     res.send(response)
                   });
               }

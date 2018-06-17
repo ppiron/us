@@ -906,20 +906,26 @@ var App = function (_Component) {
     };
 
     _this.onChange = _this.onChange.bind(_this);
+    _this.onKeyPress = _this.onKeyPress.bind(_this);
     _this.onSubmit = _this.onSubmit.bind(_this);
     _this.navigate = _this.navigate.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {}
-  }, {
     key: 'onChange',
     value: function onChange(event) {
       this.setState({
         text: event.target.value
       });
+    }
+  }, {
+    key: 'onKeyPress',
+    value: function onKeyPress(event) {
+      console.log(event.key);
+      if (event.key === 'Enter') {
+        this.onSubmit();
+      }
     }
   }, {
     key: 'onSubmit',
@@ -957,9 +963,10 @@ var App = function (_Component) {
             _react2.default.createElement(
               'p',
               null,
-              'Insert url to shorten '
+              'Insert URL to be shorten'
             ),
-            _react2.default.createElement('input', { type: 'text', placeholder: 'https://www.example.com', value: this.state.text, onChange: this.onChange }),
+            _react2.default.createElement('input', { type: 'text', placeholder: 'https://www.example.com', value: this.state.text,
+              onChange: this.onChange, onKeyPress: this.onKeyPress }),
             _react2.default.createElement(
               'div',
               { className: 'button', onClick: this.onSubmit },
@@ -991,9 +998,10 @@ var App = function (_Component) {
           _react2.default.createElement(
             'p',
             null,
-            'Insert url to shorten '
+            'Insert URL to be shorten'
           ),
-          _react2.default.createElement('input', { type: 'text', placeholder: 'https://www.example.com', value: this.state.text, onChange: this.onChange }),
+          _react2.default.createElement('input', { type: 'text', placeholder: 'https://www.example.com', value: this.state.text,
+            onChange: this.onChange, onKeyPress: this.onKeyPress }),
           _react2.default.createElement(
             'div',
             { className: 'button', onClick: this.onSubmit },
